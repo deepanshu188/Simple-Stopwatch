@@ -9,37 +9,50 @@ let blink;
 let timer;
 let sec;
 let min;
+let laps;
+let lapCount = 0;
+let lapContainer = document.querySelector(".lapContainer");
+let lapBtn = document.querySelector(".lapBtn");
+let loader = document.querySelector(".loader");
 
 function invisible() {
+
     timer.style.visibility = 'hidden'
     sec.style.visibility = 'hidden'
     min.style.visibility = 'hidden'
 }
 
 function visible() {
+
     timer.style.visibility = 'visible'
     sec.style.visibility = 'visible'
     min.style.visibility = 'visible'
 }
 
 const start = () => {
+
 timer = document.querySelector('.timer')
 sec = document.querySelector('.sec')
 min = document.querySelector('.min')
 let stop = document.querySelector('.stop')
 let start = document.querySelector('.start')
 stop.style.display = 'inline';
+lapBtn.style.visibility = 'visible';
+loader.style.visibility = 'visible';
 
 if(pause)
 {
-    stop.innerHTML = 'Reset'
+    stop.innerHTML = 'Reset';
     clearInterval(timerAnimation)
     clearInterval(clockAnimation)
-    start.innerHTML = 'Start'
+    start.innerHTML = 'Start';
+    lapBtn.style.visibility = 'hidden';
+    loader.style.visibility = 'hidden';
     pause = false
     i = 0;
     
   blink = setInterval(() => {
+  
         if(i === 0 || i === 2)
         {
             invisible();
@@ -48,10 +61,13 @@ if(pause)
         } else {
             clearInterval(blink)
         }
+        
         i++;
+        
     },500)
     
 } else {
+
     pause = true;
     start.innerHTML = 'Pause';
     stop.innerHTML = 'Stop';
@@ -86,11 +102,14 @@ clockAnimation = setInterval(() => {
 }
 
 const stop = () => {
+
 timer.textContent = '00'
 sec.textContent = '00'
 min.textContent = '00'
 let start = document.querySelector('.start')
 let stop = document.querySelector('.stop')
+loader.style.visibility = 'hidden';
+lapContainer.style.display = 'none';
 clearInterval(timerAnimation)
 clearInterval(clockAnimation)
 dMin = 0;
@@ -99,6 +118,20 @@ miliSec = 0;
 pause = false
 start.innerHTML = 'Start';
 stop.style.display = 'none';
+lapBtn.style.visibility = 'hidden';
 clearInterval(blink);
 visible();
+
+lapContainer.innerHTML = "";
+lapCount = 0;
+}
+
+const startLap = () => {
+
+    lapCount++
+    laps = document.createElement("p");
+    let lapData = document.createTextNode(`#${lapCount} ${dMin}: ${dSec-1}. ${miliSec}`);
+    laps.appendChild(lapData);
+    lapContainer.appendChild(laps);
+    lapContainer.style.display = 'block';
 }
